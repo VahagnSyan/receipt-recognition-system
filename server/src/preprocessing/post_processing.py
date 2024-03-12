@@ -7,6 +7,7 @@ import cv2
 from PIL import Image
 import pytesseract
 from preprocessing import Preprocessing
+from detection import Detection
 
 class Post_Processing:
     '''Doc'''
@@ -33,10 +34,12 @@ class Post_Processing:
                 return self.text
             self.rotate_image_90(RESULT_IMAGE_PATH)
             img = Image.open(RESULT_IMAGE_PATH)
-            self.text = pytesseract.image_to_string(img, lang="Armenian+rus")
+            self.text = pytesseract.image_to_string(img, lang="hye+eng+rus")
         return ''
 
 preprocessor = Preprocessing("./src/images/7.jpg")
 result_text = preprocessor.process_image()
 post = Post_Processing(result_text)
-print(post.post_process())
+obj = Detection(post.post_process())
+for i in obj.detection():
+    print(i)
